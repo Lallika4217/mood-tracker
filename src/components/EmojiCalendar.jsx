@@ -47,7 +47,7 @@ const EmojiCalendar = () => {
 
       <Calendar
         tileContent={({ date }) => {
-          const dateKey = date.toISOString().split("T")[0];
+          const dateKey = date.toLocaleDateString("en-CA"); // Fix for timezone issue
           const emoji = moodByDate[dateKey] || "";
           return <div className="text-2xl">{emoji}</div>;
         }}

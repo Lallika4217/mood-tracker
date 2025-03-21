@@ -19,11 +19,11 @@ export const DataProvider = ({ children }) => {
   }, [moodHistory]);
 
   // Function to save a new mood entry
-  const saveMood = (mood, date, time) => {
-    const newEntry = { date, time, mood };
+  const saveMood = (mood, date, time, note) => {
+    const newEntry = { date, time, mood, note };
     setMoodHistory((prevHistory) => [...prevHistory, newEntry]);
-    setSelectedMood(null); // Reset selection after saving
-    setSelecting(false); // Stop selecting after saving
+    setSelectedMood(null);
+    setSelecting(false);
   };
 
   return (

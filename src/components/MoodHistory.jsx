@@ -7,7 +7,7 @@ const MoodHistory = () => {
   if (moodHistory.length === 0) return null;
 
   return (
-    <div className="p-4 w-full bg-gray-900 md:m-4 rounded-lg shadow-lg shadow-gray-700">
+    <div className="p-4 w-full bg-gray-900 m-4 rounded-lg shadow-lg shadow-gray-700">
       <h2 className="text-lg font-semibold mb-2 text-green-400">
         Mood History
       </h2>
@@ -25,7 +25,7 @@ const MoodHistory = () => {
             </li>
           ))}
       </ul>
-    </div>
+    </div> 
   );
 };
 
