@@ -10,13 +10,13 @@ const Dashboard = () => {
     <div className="flex flex-col justify-evenly min-h-screen h-full bg-black">
       <div>
         <MotivationalQuote />
-        <OpenSelection />
       </div>
       <div className="flex flex-col md:flex-row md:justify-evenly">
         <EmojiCalendar />
         <MoodHistory />
       </div>
       <Graph />
+      <OpenSelection />
     </div>
   );
 };

@@ -5,5 +5,5 @@ import Dashboard from "./components/Dashboard";
 
 export default function App() {
   const { today, selecting } = useContext(DataContext);
-  return !today || selecting ? <Selection /> : <Dashboard />;
+  return selecting ? <Selection /> : <Dashboard />;
 }

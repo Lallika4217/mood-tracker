@@ -63,7 +63,7 @@ const MotivationalQuote = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        Motivational Quote
+        Emotomate
       </motion.h2>
 
       <motion.p
