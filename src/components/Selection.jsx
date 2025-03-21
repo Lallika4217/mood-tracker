@@ -125,30 +125,13 @@ const Selection = () => {
       {selectedMood && (
         <button
           className="mt-6 px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg"
-          onClick={() => saveMood(selectedMood, date, time)}
-        >
+          onClick={() => {
+            setIsAnimating(true);
+            saveMood(selectedMood, date, time);
+          }}
+        >src/components/Selection.jsx 
           Save Selection
         </button>
-      )}
-
-      {/* Mood History Section */}
-      {moodHistory.length > 0 && (
-        <div className="mt-8 p-4 w-full max-w-md bg-gray-800 rounded-lg">
-          <h2 className="text-lg font-semibold mb-2 text-green-300">
-            Mood History
-          </h2>
-          <ul className="space-y-2">
-            {moodHistory
-              .slice()
-              .reverse()
-              .map((entry, index) => (
-                <li key={index} className="text-sm text-gray-300">
-                  {entry.date} at {entry.time} →{" "}
-                  <span className="font-bold text-green-400">{entry.mood}</span>
-                </li>
-              ))}
-          </ul>
-        </div>
       )}
     </div>
   );
