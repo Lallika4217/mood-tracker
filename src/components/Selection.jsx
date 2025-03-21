@@ -1,12 +1,43 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Lottie from "react-lottie"; // Install with: npm install react-lottie
 
 const moods = [
-  { label: "rad", color: "text-teal-400", emoji: "😆" },
-  { label: "good", color: "text-green-400", emoji: "😊" },
-  { label: "meh", color: "text-blue-400", emoji: "😐" },
-  { label: "bad", color: "text-orange-400", emoji: "☹️" },
-  { label: "awful", color: "text-red-400", emoji: "😢" },
+  {
+    label: "rad",
+    color: "text-teal-400",
+    emoji: "😆",
+    lottieUrl:
+      "https://fonts.gstatic.com/s/e/notoemoji/latest/1f606/lottie.json",
+  },
+  {
+    label: "good",
+    color: "text-green-400",
+    emoji: "😊",
+    lottieUrl:
+      "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60a/lottie.json",
+  },
+  {
+    label: "meh",
+    color: "text-blue-400",
+    emoji: "😐",
+    lottieUrl:
+      "https://fonts.gstatic.com/s/e/notoemoji/latest/1f610/lottie.json",
+  },
+  {
+    label: "bad",
+    color: "text-orange-400",
+    emoji: "☹️",
+    lottieUrl:
+      "https://fonts.gstatic.com/s/e/notoemoji/latest/2639_fe0f/lottie.json",
+  },
+  {
+    label: "awful",
+    color: "text-red-400",
+    emoji: "😢",
+    lottieUrl:
+      "https://fonts.gstatic.com/s/e/notoemoji/latest/1f622/lottie.json",
+  },
 ];
 
 const Selection = () => {
@@ -14,6 +45,15 @@ const Selection = () => {
   const [time, setTime] = useState(
     new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
   );
+  // State to track which mood has been selected
+  const [selectedMood, setSelectedMood] = useState(null);
+
+  // Lottie options – here we use the lottieUrl from the mood object
+  const getLottieOptions = (lottieUrl) => ({
+    loop: false,
+    autoplay: true,
+    path: lottieUrl, // use the URL from the mood object
+  });
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4">
@@ -35,26 +75,41 @@ const Selection = () => {
         />
       </div>
 
-      {/* Emoji Mood Selector with Wave Animation */}
+      {/* Emoji Mood Selector */}
       <div className="flex gap-6 mt-12">
         {moods.map((mood, index) => (
-          <motion.div
+          <div
             key={mood.label}
-            className={`flex flex-col items-center ${mood.color} text-xl`}
-            animate={{
-              y: [0, -40, 0, 0], // Higher jump and return to normal
-            }}
-            transition={{
-              duration: 3, // Wave effect lasts 4 seconds
-              repeat: Infinity, // Loop forever
-              ease: "easeInOut",
-              delay: index * 0.2, // Stagger effect for wave
-              repeatDelay: 3, // Wait 3 seconds after each wave
-            }}
+            onClick={() => setSelectedMood(mood.label)}
+            className="cursor-pointer"
           >
-            <span className="text-6xl">{mood.emoji}</span>
-            <span>{mood.label}</span>
-          </motion.div>
+            {selectedMood === mood.label ? (
+              // Render Lottie animation when this mood is selected.
+              <Lottie
+                options={getLottieOptions(mood.lottieUrl)}
+                height={100}
+                width={100}
+              />
+            ) : (
+              // Render the wave animation if this mood is not selected.
+              <motion.div
+                className={`flex flex-col items-center ${mood.color} text-xl`}
+                animate={{
+                  y: [0, -40, 0, 0], // Wave effect
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: index * 0.2,
+                  repeatDelay: 3,
+                }}
+              >
+                <span className="text-6xl">{mood.emoji}</span>
+                <span>{mood.label}</span>
+              </motion.div>
+            )}
+          </div>
         ))}
       </div>
     </div>
@@ -62,3 +117,4 @@ const Selection = () => {
 };
 
 export default Selection;
+src/components/Selection.jsx
