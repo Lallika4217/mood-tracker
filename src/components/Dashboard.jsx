@@ -12,7 +12,7 @@ const Dashboard = () => {
         <MotivationalQuote />
         <OpenSelection />
       </div>
-      <div className="flex flex-row justify-evenly">
+      <div className="flex flex-col md:flex-row md:justify-evenly">
         <EmojiCalendar />
         <MoodHistory />
       </div>
