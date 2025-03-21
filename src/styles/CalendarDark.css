@@ -1,0 +1,44 @@
+/* Global Calendar Styles */
+.calendar-dark {
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* Dark Theme for Calendar */
+.react-calendar {
+  background-color: #1f2937; /* gray-900 */
+  border: none;
+  border-radius: 10px;
+}
+
+/* Navigation Buttons */
+.react-calendar__navigation {
+  background-color: #1f2937;
+  color: white;
+}
+
+/* Days View */
+.react-calendar__month-view__days__day {
+  color: white;
+}
+
+/* Calendar Tiles */
+.react-calendar__tile {
+  background: #2d3748; /* gray-800 */
+  color: white;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Hover Effect */
+.react-calendar__tile:hover {
+  color: #34d399; /* text-green-400 */
+  background: #374151; /* gray-700 */
+}
+
+/* Active (Selected) Date */
+.react-calendar__tile--active {
+  background: #34d399; /* green-400 */
+  color: black;
+}

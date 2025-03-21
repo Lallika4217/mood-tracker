@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { motion } from "framer-motion";
 import Lottie from "react-lottie";
 import { DataContext } from "../context/DataContext";
+import { X } from "lucide-react";
 
 const moods = [
   {
@@ -42,15 +43,15 @@ const moods = [
 ];
 
 const Selection = () => {
-  const { selectedMood, setSelectedMood, saveMood, moodHistory } =
+  const { selectedMood, setSelectedMood, saveMood, setSelecting } =
     useContext(DataContext);
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [time, setTime] = useState(
     new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
   );
-  const [isAnimating, setIsAnimating] = useState(true); // Controls wave animation
+  const [note, setNote] = useState(""); // New state for note-taking
+  const [isAnimating, setIsAnimating] = useState(true);
 
-  // Lottie options
   const getLottieOptions = (lottieUrl) => ({
     loop: false,
     autoplay: true,
@@ -68,11 +69,18 @@ const Selection = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-black text-white px-4">
+      <button
+        onClick={() => setSelecting(false)}
+        className="absolute top-4 right-4 text-gray-400 hover:text-white transition duration-300"
+      >
+        <X className="w-6 h-6" />
+      </button>
+
       <h1 className="text-3xl font-bold mb-4">How are you?</h1>
 
-      {/* Date and Time Inputs */}
-      <div className="flex items-center gap-4 mb-6">
+      {/* Date, Time Inputs */}
+      <div className="flex items-center gap-4 mb-4">
         <input
           type="date"
           value={date}
@@ -87,8 +95,8 @@ const Selection = () => {
         />
       </div>
 
-      {/* Wave Animation for Moods */}
-      <div className="flex gap-6 mt-12">
+      {/* Mood Selection */}
+      <div className="flex gap-6 mt-6">
         {moods.map((mood, index) => (
           <motion.div
             key={mood.label}
@@ -96,11 +104,11 @@ const Selection = () => {
             className="cursor-pointer"
             animate={isAnimating ? { y: [0, -40, 0] } : { y: 0 }}
             transition={{
-              duration: 3, // Animation duration
-              repeat: isAnimating ? Infinity : 0, // Keep repeating if animation is active
-              ease: "easeInOut", // Smooth transition
-              delay: index * 0.2, // Staggered start for wave effect
-              repeatDelay: 2, // Delay after each complete cycle
+              duration: 3,
+              repeat: isAnimating ? Infinity : 0,
+              ease: "easeInOut",
+              delay: index * 0.2,
+              repeatDelay: 2,
             }}
           >
             {selectedMood === mood.label ? (
@@ -121,15 +129,25 @@ const Selection = () => {
         ))}
       </div>
 
-      {/* Save Selection Button */}
+      {/* Note Input */}
+      {selectedMood && (
+        <textarea
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          placeholder="Write a note (optional)..."
+          className="mt-4 w-full max-w-md p-2 bg-gray-800 text-white border border-gray-600 rounded-md resize-none"
+        />
+      )}
+
+      {/* Save Button */}
       {selectedMood && (
         <button
-          className="mt-6 px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg"
+          className="mt-4 px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg"
           onClick={() => {
             setIsAnimating(true);
-            saveMood(selectedMood, date, time);
+            saveMood(selectedMood, date, time, note); // Pass note to saveMood function
           }}
-        >src/components/Selection.jsx 
+        >
           Save Selection
         </button>
       )}

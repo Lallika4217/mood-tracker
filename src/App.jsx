@@ -1,11 +1,9 @@
-import MoodHistory from "./components/MoodHistory";
+import { useContext } from "react";
 import Selection from "./components/Selection";
+import { DataContext } from "./context/DataContext";
+import Dashboard from "./components/Dashboard";
 
 export default function App() {
-  return (
-    <div>
-      <Selection />
-      <MoodHistory />
-    </div>
-  );
+  const { today, selecting } = useContext(DataContext);
+  return !today || selecting ? <Selection /> : <Dashboard />;
 }
