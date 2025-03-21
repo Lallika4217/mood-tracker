@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { motion } from "framer-motion";
-import Lottie from "react-lottie"; // Install with: npm install react-lottie
+import Lottie from "react-lottie";
+import { DataContext } from "../context/DataContext";
 
 const moods = [
   {
@@ -41,19 +42,30 @@ const moods = [
 ];
 
 const Selection = () => {
+  const { selectedMood, setSelectedMood, saveMood, moodHistory } =
+    useContext(DataContext);
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [time, setTime] = useState(
     new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
   );
-  // State to track which mood has been selected
-  const [selectedMood, setSelectedMood] = useState(null);
+  const [isAnimating, setIsAnimating] = useState(true); // Controls wave animation
 
-  // Lottie options – here we use the lottieUrl from the mood object
+  // Lottie options
   const getLottieOptions = (lottieUrl) => ({
     loop: false,
     autoplay: true,
-    path: lottieUrl, // use the URL from the mood object
+    path: lottieUrl,
   });
+
+  const handleMoodClick = (mood) => {
+    if (selectedMood === mood) {
+      setSelectedMood(null);
+      setIsAnimating(true);
+    } else {
+      setSelectedMood(mood);
+      setIsAnimating(false);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4">
@@ -75,46 +87,71 @@ const Selection = () => {
         />
       </div>
 
-      {/* Emoji Mood Selector */}
+      {/* Wave Animation for Moods */}
       <div className="flex gap-6 mt-12">
         {moods.map((mood, index) => (
-          <div
+          <motion.div
             key={mood.label}
-            onClick={() => setSelectedMood(mood.label)}
+            onClick={() => handleMoodClick(mood.label)}
             className="cursor-pointer"
+            animate={isAnimating ? { y: [0, -40, 0] } : { y: 0 }}
+            transition={{
+              duration: 3, // Animation duration
+              repeat: isAnimating ? Infinity : 0, // Keep repeating if animation is active
+              ease: "easeInOut", // Smooth transition
+              delay: index * 0.2, // Staggered start for wave effect
+              repeatDelay: 2, // Delay after each complete cycle
+            }}
           >
             {selectedMood === mood.label ? (
-              // Render Lottie animation when this mood is selected.
               <Lottie
                 options={getLottieOptions(mood.lottieUrl)}
                 height={100}
                 width={100}
               />
             ) : (
-              // Render the wave animation if this mood is not selected.
-              <motion.div
+              <div
                 className={`flex flex-col items-center ${mood.color} text-xl`}
-                animate={{
-                  y: [0, -40, 0, 0], // Wave effect
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: index * 0.2,
-                  repeatDelay: 3,
-                }}
               >
                 <span className="text-6xl">{mood.emoji}</span>
                 <span>{mood.label}</span>
-              </motion.div>
+              </div>
             )}
-          </div>
+          </motion.div>
         ))}
       </div>
+
+      {/* Save Selection Button */}
+      {selectedMood && (
+        <button
+          className="mt-6 px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg"
+          onClick={() => saveMood(selectedMood, date, time)}
+        >
+          Save Selection
+        </button>
+      )}
+
+      {/* Mood History Section */}
+      {moodHistory.length > 0 && (
+        <div className="mt-8 p-4 w-full max-w-md bg-gray-800 rounded-lg">
+          <h2 className="text-lg font-semibold mb-2 text-green-300">
+            Mood History
+          </h2>
+          <ul className="space-y-2">
+            {moodHistory
+              .slice()
+              .reverse()
+              .map((entry, index) => (
+                <li key={index} className="text-sm text-gray-300">
+                  {entry.date} at {entry.time} →{" "}
+                  <span className="font-bold text-green-400">{entry.mood}</span>
+                </li>
+              ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Selection;
-src/components/Selection.jsx
