@@ -9,7 +9,7 @@ const moods = [
   { label: "awful", color: "text-red-400", emoji: "😢" },
 ];
 
-const Home = () => {
+const Selection = () => {
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [time, setTime] = useState(
     new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
@@ -61,4 +61,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Selection;

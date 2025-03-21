@@ -1,9 +1,9 @@
-import Home from "./components/Home";
+import Selection from "./components/Selection";
 
 export default function App() {
   return (
     <div>
-      <Home />
+      <Selection />
     </div>
   );
 }
